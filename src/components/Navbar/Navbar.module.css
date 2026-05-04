@@ -1,0 +1,210 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-fixed);
+  padding: 1rem 0;
+  transition: all var(--transition-base);
+}
+
+.navbar.scrolled {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 0.75rem 0;
+}
+
+.navInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  z-index: 10;
+}
+
+.logoIcon {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-gradient);
+  border-radius: var(--radius-md);
+  color: white;
+  box-shadow: 0 4px 16px rgba(108, 99, 255, 0.35);
+}
+
+.logoText {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--text-xl);
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.logoAccent {
+  color: var(--primary);
+}
+
+/* Nav Links */
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.navLink {
+  padding: 0.5rem 1rem;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.navLink:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+}
+
+/* Actions */
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.themeToggle {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.themeToggle:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+  border-color: var(--border-hover);
+}
+
+.loginBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.loginBtn:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+}
+
+.ctaBtn {
+  padding: 0.55rem 1.25rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: white;
+  background: var(--primary);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 12px rgba(108, 99, 255, 0.3);
+}
+
+.ctaBtn:hover {
+  background: var(--primary-hover);
+  box-shadow: 0 4px 20px rgba(108, 99, 255, 0.45);
+  transform: translateY(-1px);
+}
+
+/* Mobile */
+.mobileToggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text);
+}
+
+.mobileMenu {
+  display: none;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem var(--container-padding);
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.mobileLink {
+  padding: 0.75rem 1rem;
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.mobileLink:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+}
+
+.mobileCta {
+  margin-top: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  color: white;
+  background: var(--primary);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navLinks {
+    display: none;
+  }
+
+  .loginBtn,
+  .ctaBtn {
+    display: none;
+  }
+
+  .mobileToggle {
+    display: flex;
+  }
+
+  .mobileMenu {
+    display: flex;
+  }
+}
