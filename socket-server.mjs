@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import Message from './src/models/Message.js';
 
 const MONGODB_URI = process.env.MONGODB_URI;
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // Connect to MongoDB
 if (!MONGODB_URI) {
@@ -28,7 +28,7 @@ const httpServer = createServer((req, res) => {
 // Initialize Socket.io
 const io = new Server(httpServer, {
   cors: {
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://packnplan.vercel.app'],
     methods: ['GET', 'POST'],
     credentials: true
   }
