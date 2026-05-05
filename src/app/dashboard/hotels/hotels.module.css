@@ -46,7 +46,19 @@
 .priceValue { font-family: var(--font-heading); font-size: var(--text-xl); font-weight: 800; }
 .priceUnit { font-size: var(--text-xs); color: var(--text-tertiary); }
 
-.bookBtn { padding: 0.45rem 1.15rem; background: var(--primary); color: white; font-size: var(--text-sm); font-weight: 600; border-radius: var(--radius-md); transition: all var(--transition-fast); }
-.bookBtn:hover { background: var(--primary-hover); box-shadow: 0 2px 12px rgba(108,99,255,0.3); }
+.bookBtn { padding: 0.45rem 1.15rem; background: var(--primary); color: white; font-size: var(--text-sm); font-weight: 600; border-radius: var(--radius-md); transition: all var(--transition-fast); display: flex; align-items: center; gap: 0.3rem; }
+.bookBtn:hover:not(:disabled) { background: var(--primary-hover); box-shadow: 0 2px 12px rgba(108,99,255,0.3); }
+.bookedBtn { background: var(--success) !important; cursor: default; }
+.bookedBtn:hover { box-shadow: none !important; }
 
-@media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+/* Filter Bar */
+.filterBar { display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.destSelect { display: flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0.85rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); color: var(--text-secondary); position: relative; }
+.destSelect svg { flex-shrink: 0; }
+.destSelectInput { appearance: none; background: transparent; border: none; color: var(--text); font-size: var(--text-sm); font-weight: 500; outline: none; padding-right: 1rem; cursor: pointer; }
+.destSelectArrow { position: absolute; right: 0.5rem; pointer-events: none; }
+.searchBox { display: flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0.85rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); color: var(--text-tertiary); flex: 1; min-width: 200px; }
+.searchBoxInput { background: transparent; border: none; color: var(--text); font-size: var(--text-sm); outline: none; flex: 1; }
+.searchBoxInput::placeholder { color: var(--text-tertiary); }
+
+@media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .filterBar { flex-direction: column; } }

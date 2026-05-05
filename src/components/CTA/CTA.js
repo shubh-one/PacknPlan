@@ -1,11 +1,15 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, LayoutDashboard } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import styles from './CTA.module.css';
 
 export default function CTA() {
+  const { data: session } = useSession();
+  const isLoggedIn = !!session?.user;
+
   return (
     <section className={styles.section}>
       <div className="container">
@@ -28,25 +32,34 @@ export default function CTA() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <Sparkles size={16} />
-              <span>Start Free — No Credit Card Required</span>
+              <span>{isLoggedIn ? 'Welcome back, ' + (session.user.name?.split(' ')[0] || 'Traveler') + '!' : 'Start Free — No Credit Card Required'}</span>
             </motion.div>
 
             <h2 className={styles.title}>
-              Ready to Plan Your
+              {isLoggedIn ? 'Continue Planning Your' : 'Ready to Plan Your'}
               <br />
               <span className={styles.gradientText}>Dream Trip?</span>
             </h2>
 
             <p className={styles.subtitle}>
-              Join 10,000+ travelers who use PACKnPLAN to create unforgettable
-              travel experiences. Start planning in minutes.
+              {isLoggedIn
+                ? 'Your trips, budgets, and reviews are waiting. Jump back in and keep the adventure going.'
+                : 'Join 10,000+ travelers who use PACKnPLAN to create unforgettable travel experiences. Start planning in minutes.'}
             </p>
 
             <div className={styles.actions}>
-              <Link href="/login" className={styles.primaryBtn} id="cta-get-started">
-                Get Started Free
-                <ArrowRight size={18} />
-              </Link>
+              {isLoggedIn ? (
+                <Link href="/dashboard" className={styles.primaryBtn} id="cta-dashboard">
+                  <LayoutDashboard size={18} />
+                  Go to Dashboard
+                  <ArrowRight size={18} />
+                </Link>
+              ) : (
+                <Link href="/login?mode=signup" className={styles.primaryBtn} id="cta-get-started">
+                  Get Started Free
+                  <ArrowRight size={18} />
+                </Link>
+              )}
               <a href="#features" className={styles.secondaryBtn}>
                 See How It Works
               </a>

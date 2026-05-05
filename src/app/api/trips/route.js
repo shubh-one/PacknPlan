@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import dbConnect from '@/lib/mongodb';
 import Trip from '@/models/Trip';
 import Expense from '@/models/Expense';
 
 async function getUserId() {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   return session?.user?.id || null;
 }
 
@@ -52,7 +53,7 @@ export async function POST(request) {
     }
 
     const body = await request.json();
-    const { destination, emoji, startDate, endDate, budget, travelers, status } = body;
+    const { destination, emoji, startDate, endDate, budget, travelers, status, itinerary } = body;
 
     if (!destination || !startDate || !endDate || !budget) {
       return NextResponse.json(
@@ -63,6 +64,37 @@ export async function POST(request) {
 
     await dbConnect();
 
+    // Sanitize itinerary — handle cases where AI returns items as strings
+    let cleanItinerary = [];
+    if (Array.isArray(itinerary)) {
+      cleanItinerary = itinerary.map(day => {
+        // Handle items that might be a string instead of array
+        let parsedItems = day.items;
+        if (typeof parsedItems === 'string') {
+          try {
+            // Try to parse as JSON (replace single quotes with double quotes for valid JSON)
+            parsedItems = JSON.parse(parsedItems.replace(/'/g, '"'));
+          } catch {
+            parsedItems = [];
+          }
+        }
+
+        return {
+          day: day.day,
+          title: day.title || '',
+          tips: Array.isArray(day.tips) ? day.tips : (typeof day.tips === 'string' ? [day.tips] : []),
+          items: Array.isArray(parsedItems) ? parsedItems.map(item => ({
+            time: String(item.time || ''),
+            activity: String(item.activity || ''),
+            type: String(item.type || ''),
+            emoji: String(item.emoji || ''),
+            estimatedCost: String(item.estimatedCost || ''),
+          })) : [],
+        };
+      });
+    }
+    console.log('Sanitized itinerary days:', cleanItinerary.length, 'items per day:', cleanItinerary.map(d => d.items?.length));
+
     const trip = await Trip.create({
       userId,
       destination,
@@ -72,6 +104,7 @@ export async function POST(request) {
       budget: Number(budget),
       travelers: Number(travelers) || 1,
       status: status || 'Planning',
+      itinerary: cleanItinerary,
     });
 
     return NextResponse.json(

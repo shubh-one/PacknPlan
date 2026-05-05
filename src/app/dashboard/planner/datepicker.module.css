@@ -1,0 +1,189 @@
+.calendarWrap {
+  position: relative;
+}
+
+.calendarTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+}
+
+.calendarTriggerValue {
+  font-weight: 500;
+}
+
+.calendarTriggerPlaceholder {
+  color: var(--text-tertiary);
+}
+
+.calendarTriggerIcon {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+/* Calendar Popup */
+.calendar {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 310px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-dropdown);
+  padding: 1rem;
+  animation: calSlide 0.15s ease-out;
+}
+
+@keyframes calSlide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Calendar Header */
+.calHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.calMonthYear {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.calNavBtns {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.calNavBtn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.calNavBtn:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+/* Calendar Grid */
+.calGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calDayLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.calDay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  width: 100%;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.calDay:hover:not(:disabled) {
+  background: var(--surface-hover);
+}
+
+.calDayDisabled {
+  color: var(--text-tertiary);
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.calDayDisabled:hover {
+  background: transparent !important;
+}
+
+.calDayToday {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.calDayToday::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+}
+
+.calDaySelected {
+  background: var(--primary) !important;
+  color: white !important;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+}
+
+.calDaySelected::after {
+  display: none;
+}
+
+.calDayOtherMonth {
+  color: var(--text-tertiary);
+  opacity: 0.3;
+}
+
+/* Today button */
+.calTodayBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.45rem;
+  margin-top: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.calTodayBtn:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}

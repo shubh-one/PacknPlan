@@ -315,3 +315,67 @@ ul, ol {
   50% { border-radius: 50% 60% 30% 60% / 30% 50% 70% 60%; }
   75% { border-radius: 60% 40% 60% 30% / 70% 30% 50% 60%; }
 }
+
+/* ===== StyledSelect Global Styles ===== */
+.styledSelectWrap { position: relative; }
+
+.styledSelectTrigger {
+  display: flex; align-items: center; gap: 0.5rem;
+  width: 100%; padding: 0.6rem 0.85rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-md); color: var(--text);
+  font-size: var(--text-sm); font-weight: 500;
+  cursor: pointer; transition: all 0.2s ease; text-align: left;
+}
+.styledSelectTrigger:hover { border-color: var(--border-hover); background: var(--surface-hover); }
+
+.styledSelectIcon { color: var(--primary); flex-shrink: 0; }
+.styledSelectValue { flex: 1; font-weight: 600; }
+.styledSelectPlaceholder { flex: 1; color: var(--text-tertiary); font-weight: 400; }
+.styledSelectChevron { color: var(--text-tertiary); flex-shrink: 0; transition: transform 0.2s ease; }
+.styledSelectChevronOpen { transform: rotate(180deg); }
+
+.styledSelectMenu {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+  min-width: 200px; background: var(--bg-secondary);
+  border: 1px solid var(--border); border-radius: var(--radius-xl);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4); z-index: 600;
+  overflow: hidden; animation: styledSelectIn 0.2s ease;
+}
+
+.styledSelectSearch {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.65rem 0.85rem; border-bottom: 1px solid var(--border);
+  color: var(--text-tertiary);
+}
+.styledSelectSearch input {
+  flex: 1; background: transparent; border: none; outline: none;
+  color: var(--text); font-size: var(--text-sm);
+}
+.styledSelectSearch input::placeholder { color: var(--text-tertiary); }
+
+.styledSelectList { max-height: 260px; overflow-y: auto; padding: 0.35rem; }
+.styledSelectList::-webkit-scrollbar { width: 4px; }
+.styledSelectList::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.styledSelectEmpty { padding: 1rem; text-align: center; color: var(--text-tertiary); font-size: var(--text-sm); }
+
+.styledSelectItem {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 0.55rem 0.75rem;
+  background: transparent; border: none; color: var(--text);
+  text-align: left; cursor: pointer;
+  border-radius: var(--radius-md); transition: all 0.15s ease;
+  font-size: var(--text-sm);
+}
+.styledSelectItem:hover { background: var(--surface-hover); }
+.styledSelectItemActive { background: var(--primary-light) !important; color: var(--primary) !important; font-weight: 600; }
+
+.styledSelectItemLabel { font-weight: 500; display: block; }
+.styledSelectItemSub { font-size: 0.65rem; color: var(--text-tertiary); display: block; margin-top: 0.05rem; }
+
+@keyframes styledSelectIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+

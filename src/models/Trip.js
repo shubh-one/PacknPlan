@@ -39,6 +39,18 @@ const TripSchema = new mongoose.Schema({
     enum: ['Planning', 'Booked', 'In Progress', 'Completed'],
     default: 'Planning',
   },
+  itinerary: [{
+    day: Number,
+    title: String,
+    tips: [String],
+    items: [{
+      time: String,
+      activity: String,
+      type: String,
+      emoji: String,
+      estimatedCost: String,
+    }]
+  }],
 }, {
   timestamps: true,
 });

@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import dbConnect from '@/lib/mongodb';
 import Trip from '@/models/Trip';
 import Expense from '@/models/Expense';
 
 async function getUserId() {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   return session?.user?.id || null;
 }
 

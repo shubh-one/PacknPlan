@@ -1,0 +1,44 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head><title>PACKnPLAN Project Technologies Report</title></head>
+<body style="font-family: Arial, sans-serif; font-size: 11pt;">
+    <h1 style="color: #2c3e50;">PACKnPLAN Project Technologies Report</h1>
+    <p>This report outlines the technology stack utilized in the development and deployment of the PACKnPLAN full-stack travel platform.</p>
+
+    <h2 style="color: #34495e;">Frontend Technologies</h2>
+    <ul>
+        <li><b>Next.js (v16.2.4)</b>: The core React framework used for building the application, utilizing the App Router for routing.</li>
+        <li><b>React & React DOM (v19.2.4)</b>: The foundational library for building user interfaces.</li>
+        <li><b>Vanilla CSS / CSS Modules</b>: Used for component styling and responsive design.</li>
+        <li><b>Framer Motion</b>: Integrated for dynamic, smooth UI animations and transitions.</li>
+        <li><b>Lucide React</b>: Provides the icon set used throughout the application.</li>
+        <li><b>Recharts</b>: Used for data visualization and rendering interactive charts.</li>
+    </ul>
+
+    <h2 style="color: #34495e;">Backend Technologies</h2>
+    <ul>
+        <li><b>Next.js API Routes</b>: Acts as the primary serverless backend for handling standard HTTP requests.</li>
+        <li><b>MongoDB & Mongoose (v9.6.1)</b>: The NoSQL database and Object Data Modeling (ODM) library used for data persistence.</li>
+        <li><b>Socket.io (v4.8.3)</b>: Enables real-time, bi-directional communication, primarily powering the live chat feature for trip collaboration.</li>
+        <li><b>Node.js (http module)</b>: The runtime environment hosting the standalone Socket.io server (<code>socket-server.mjs</code>).</li>
+        <li><b>NextAuth.js (v4.24.14)</b>: Handles authentication, session management, and secure user access.</li>
+        <li><b>Bcryptjs</b>: Used for securely hashing user passwords.</li>
+        <li><b>Google GenAI API (<code>@google/genai</code>)</b>: Powers the AI-driven trip recommendations and planning features.</li>
+    </ul>
+
+    <h2 style="color: #34495e;">Deployment Technologies</h2>
+    <ul>
+        <li><b>Vercel</b>: The primary hosting platform for deploying the Next.js application, including the frontend UI and serverless API routes.</li>
+        <li><b>Render</b>: Utilized for hosting the stateful Node.js WebSocket server (<code>socket-server.mjs</code>) required for real-time chat functionality.</li>
+    </ul>
+
+    <h2 style="color: #34495e;">Core Features</h2>
+    <ul>
+        <li><b>Smart Budget Planning</b>: Personalized trip suggestions based on your budget, coupled with real-time expense tracking via interactive dashboards.</li>
+        <li><b>Transport Booking</b>: An integrated interface to compare and book flights, trains, buses, and cabs to find the best deals.</li>
+        <li><b>Hotel & Restaurant Finder</b>: Discovery tool for top-rated accommodations and dining options tailored to user preferences and ratings.</li>
+        <li><b>AI Trip Suggestions</b>: AI-driven personalized itinerary creation based on user interests, style, and budget.</li>
+        <li><b>Real-time Weather</b>: Live weather updates and alerts for destination locations.</li>
+        <li><b>Group Travel Chat</b>: Built-in real-time messaging for travel groups to seamlessly coordinate plans, share updates, and split expenses.</li>
+    </ul>
+</body>
+</html>

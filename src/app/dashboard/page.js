@@ -16,21 +16,21 @@ import { useTheme } from '@/context/ThemeContext';
 import styles from './dashboard.module.css';
 
 const recentActivity = [
-  { icon: Plane, text: 'Flight to Bali booked', time: '2 hours ago', color: '#4facfe' },
-  { icon: Hotel, text: 'Hotel Kuta Beach confirmed', time: '5 hours ago', color: '#fa709a' },
-  { icon: Wallet, text: 'Budget updated for Tokyo trip', time: '1 day ago', color: '#43e97b' },
-  { icon: MessageCircle, text: 'New message in Bali group', time: '2 days ago', color: '#a18cd1' },
+  { icon: Plane, text: 'Flight to Goa booked', time: '2 hours ago', color: '#4facfe' },
+  { icon: Hotel, text: 'Taj Fort Aguada confirmed', time: '5 hours ago', color: '#fa709a' },
+  { icon: Wallet, text: 'Budget updated for Jaipur trip', time: '1 day ago', color: '#43e97b' },
+  { icon: MessageCircle, text: 'New message in Manali group', time: '2 days ago', color: '#a18cd1' },
 ];
 
 const sidebarItems = [
   { icon: BarChart3, label: 'Dashboard', href: '/dashboard', active: true },
-  { icon: MapPin, label: 'My Trips', href: '/dashboard' },
+  { icon: MapPin, label: 'My Trips', href: '/dashboard/mytrips' },
   { icon: Plane, label: 'Bookings', href: '/dashboard/bookings' },
   { icon: Wallet, label: 'Budget', href: '/dashboard/budget' },
   { icon: Brain, label: 'AI Planner', href: '/dashboard/planner' },
-  { icon: CloudSun, label: 'Weather', href: '/dashboard' },
+  { icon: CloudSun, label: 'Weather', href: '/dashboard/weather' },
   { icon: MessageCircle, label: 'Chat', href: '/dashboard/chat' },
-  { icon: Star, label: 'Reviews', href: '/dashboard/hotels' },
+  { icon: Star, label: 'Reviews', href: '/dashboard/reviews' },
 ];
 
 const tripGradients = [
@@ -50,9 +50,6 @@ export default function DashboardPage() {
   const [trips, setTrips] = useState([]);
   const [weather, setWeather] = useState(null);
   const [loadingTrips, setLoadingTrips] = useState(true);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [newTrip, setNewTrip] = useState({ destination: '', startDate: '', endDate: '', budget: '', travelers: 1, emoji: '✈️' });
-  const [submitting, setSubmitting] = useState(false);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -83,30 +80,11 @@ export default function DashboardPage() {
     }
   };
 
-  const handleCreateTrip = async () => {
-    if (!newTrip.destination || !newTrip.startDate || !newTrip.endDate || !newTrip.budget) return;
-    setSubmitting(true);
-    try {
-      const res = await fetch('/api/trips', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newTrip),
-      });
-      if (res.ok) {
-        await fetchTrips();
-        setShowAddModal(false);
-        setNewTrip({ destination: '', startDate: '', endDate: '', budget: '', travelers: 1, emoji: '✈️' });
-      }
-    } catch (err) {
-      console.error('Failed to create trip', err);
-    } finally {
-      setSubmitting(false);
-    }
-  };
+
 
   const fetchWeather = async () => {
     try {
-      const res = await fetch('/api/weather?city=Bali');
+      const res = await fetch(`/api/weather?city=${trips.length > 0 ? encodeURIComponent(trips[0].destination) : 'Delhi'}`);
       if (res.ok) {
         const data = await res.json();
         setWeather(data);
@@ -124,8 +102,8 @@ export default function DashboardPage() {
   // Quick stats (derived from trips data)
   const quickStats = [
     { label: 'Trips Planned', value: String(trips.length || 0), icon: MapPin, trend: 'Active trips', color: '#6C63FF' },
-    { label: 'Total Budget', value: `$${trips.reduce((s, t) => s + (t.budget || 0), 0).toLocaleString()}`, icon: TrendingUp, trend: 'All trips', color: '#2ED573' },
-    { label: 'Places Visited', value: '12', icon: Star, trend: '3 countries', color: '#FFA502' },
+    { label: 'Total Budget', value: `₹${trips.reduce((s, t) => s + (t.budget || 0), 0).toLocaleString('en-IN')}`, icon: TrendingUp, trend: 'All trips', color: '#2ED573' },
+    { label: 'Places Visited', value: String(new Set(trips.map(t => t.destination)).size || 0), icon: Star, trend: `${trips.length} trips`, color: '#FFA502' },
     { label: 'Travel Buddies', value: String(trips.reduce((s, t) => s + (t.travelers || 0), 0) || 0), icon: Users, trend: 'Across trips', color: '#fa709a' },
   ];
 
@@ -245,10 +223,10 @@ export default function DashboardPage() {
           <div className={styles.section}>
             <div className={styles.sectionHeader}>
               <h2 className={styles.sectionTitle}>Upcoming Trips</h2>
-              <button className={styles.addBtn} id="add-trip-btn" onClick={() => setShowAddModal(true)}>
+              <Link href="/dashboard/planner" className={styles.addBtn} id="add-trip-btn">
                 <Plus size={16} />
                 New Trip
-              </button>
+              </Link>
             </div>
 
             <div className={styles.tripsList}>
@@ -258,47 +236,43 @@ export default function DashboardPage() {
                 <p style={{ color: 'var(--text-tertiary)', padding: '1rem' }}>No trips yet. Create your first trip!</p>
               ) : (
                 trips.map((trip, i) => (
-                  <motion.div
-                    key={trip._id}
-                    className={styles.tripCard}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.4, delay: i * 0.1 }}
-                  >
-                    <div className={styles.tripImage} style={{ background: tripGradients[i % tripGradients.length] }}>
-                      <span className={styles.tripEmoji}>{trip.emoji || tripEmojis[i % tripEmojis.length]}</span>
-                    </div>
-                    <div className={styles.tripInfo}>
-                      <div className={styles.tripTop}>
-                        <h3 className={styles.tripName}>{trip.destination}</h3>
-                        <span
-                          className={styles.tripStatus}
-                          data-status={trip.status?.toLowerCase()}
-                        >
-                          {trip.status}
-                        </span>
+                  <Link key={trip._id} href={`/dashboard/mytrips/${trip._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <motion.div
+                      className={styles.tripCard}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.4, delay: i * 0.1 }}
+                    >
+                      <div className={styles.tripImage} style={{ background: tripGradients[i % tripGradients.length] }}>
+                        <span className={styles.tripEmoji}>{trip.emoji || tripEmojis[i % tripEmojis.length]}</span>
                       </div>
-                      <div className={styles.tripDates}>
-                        <Calendar size={14} />
-                        {trip.dates}
+                      <div className={styles.tripInfo}>
+                        <div className={styles.tripTop}>
+                          <h3 className={styles.tripName}>{trip.destination}</h3>
+                          <span
+                            className={styles.tripStatus}
+                            data-status={trip.status?.toLowerCase()}
+                          >
+                            {trip.status || 'Planned'}
+                          </span>
+                        </div>
+                        <div className={styles.tripDates}>
+                          <Calendar size={14} />
+                          {trip.startDate ? new Date(trip.startDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : ''}
+                          {trip.endDate ? ` — ${new Date(trip.endDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}` : ''}
+                        </div>
+                        <div className={styles.tripMeta}>
+                          <span>
+                            <Wallet size={14} /> ₹{(trip.budget || 0).toLocaleString('en-IN')}
+                          </span>
+                          <span>
+                            <Users size={14} /> {trip.travelers || 1} travelers
+                          </span>
+                        </div>
                       </div>
-                      <div className={styles.tripMeta}>
-                        <span>
-                          <Wallet size={14} /> ${trip.spent || 0} / ${trip.budget?.toLocaleString()}
-                        </span>
-                        <span>
-                          <Users size={14} /> {trip.travelers} travelers
-                        </span>
-                      </div>
-                      <div className={styles.progressBar}>
-                        <div
-                          className={styles.progressFill}
-                          style={{ width: `${trip.progress || 0}%` }}
-                        />
-                      </div>
-                    </div>
-                    <ChevronRight size={18} className={styles.tripArrow} />
-                  </motion.div>
+                      <ChevronRight size={18} className={styles.tripArrow} />
+                    </motion.div>
+                  </Link>
                 ))
               )}
             </div>
@@ -373,90 +347,7 @@ export default function DashboardPage() {
         </div>
       </main>
 
-      {/* Add Trip Modal */}
-      <AnimatePresence>
-        {showAddModal && (
-          <motion.div
-            className={styles.modalOverlay}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setShowAddModal(false)}
-          >
-            <motion.div
-              className={styles.modal}
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h3 className={styles.modalTitle}>Plan a New Trip</h3>
-              
-              <div className={styles.modalField}>
-                <label>Destination</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Tokyo, Japan"
-                  value={newTrip.destination}
-                  onChange={(e) => setNewTrip({ ...newTrip, destination: e.target.value })}
-                  className={styles.modalInput}
-                />
-              </div>
 
-              <div className={styles.modalGrid}>
-                <div className={styles.modalField}>
-                  <label>Start Date</label>
-                  <input
-                    type="date"
-                    value={newTrip.startDate}
-                    onChange={(e) => setNewTrip({ ...newTrip, startDate: e.target.value })}
-                    className={styles.modalInput}
-                  />
-                </div>
-                <div className={styles.modalField}>
-                  <label>End Date</label>
-                  <input
-                    type="date"
-                    value={newTrip.endDate}
-                    onChange={(e) => setNewTrip({ ...newTrip, endDate: e.target.value })}
-                    className={styles.modalInput}
-                  />
-                </div>
-              </div>
-
-              <div className={styles.modalGrid}>
-                <div className={styles.modalField}>
-                  <label>Budget ($)</label>
-                  <input
-                    type="number"
-                    placeholder="0"
-                    value={newTrip.budget}
-                    onChange={(e) => setNewTrip({ ...newTrip, budget: e.target.value })}
-                    className={styles.modalInput}
-                  />
-                </div>
-                <div className={styles.modalField}>
-                  <label>Travelers</label>
-                  <input
-                    type="number"
-                    min="1"
-                    value={newTrip.travelers}
-                    onChange={(e) => setNewTrip({ ...newTrip, travelers: parseInt(e.target.value) || 1 })}
-                    className={styles.modalInput}
-                  />
-                </div>
-              </div>
-
-              <div className={styles.modalActions}>
-                <button className={styles.cancelBtn} onClick={() => setShowAddModal(false)}>Cancel</button>
-                <button className={styles.saveBtn} onClick={handleCreateTrip} disabled={submitting}>
-                  {submitting ? 'Creating...' : 'Create Trip'}
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

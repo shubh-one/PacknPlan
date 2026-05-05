@@ -317,6 +317,100 @@
   border-radius: var(--radius-full);
 }
 
+/* Search Field Button (for date/travelers) */
+.searchFieldBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+/* Dropdown Panel */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  left: 0;
+  width: 260px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 1rem;
+  box-shadow: var(--shadow-xl);
+  z-index: 50;
+}
+
+.dateInput {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  font-size: var(--text-sm);
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.dateInput:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+/* Counter Row */
+.counterRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+}
+
+.counterRow + .counterRow {
+  border-top: 1px solid var(--border);
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.counterBtn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  color: var(--text);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.counterBtn:hover:not(:disabled) {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.counterBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.counterVal {
+  font-weight: 700;
+  font-size: var(--text-base);
+  min-width: 1.5rem;
+  text-align: center;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .hero {
@@ -353,4 +447,10 @@
   .floatingCard {
     display: none;
   }
+
+  .dropdown {
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
+

@@ -16,12 +16,22 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, 'Password is required'],
-    minlength: [6, 'Password must be at least 6 characters'],
+    // NOT required — Google OAuth users won't have a password
+    // Validated at registration API level instead
+    select: false,
   },
   avatar: {
     type: String,
     default: '🧑‍✈️',
+  },
+  image: {
+    type: String, // Google profile picture URL
+    default: '',
+  },
+  provider: {
+    type: String,
+    enum: ['credentials', 'google'],
+    default: 'credentials',
   },
 }, {
   timestamps: true,
